@@ -1,0 +1,38 @@
+.footer {
+	height: var(--side-height);
+	background-color: var(--primary-color);
+	box-shadow: 0px -2px 2px #51c284;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 999;
+}
+
+.btn_box * + * {
+	margin-left: 1em;
+}
+
+.btn_box input:not([type="range"]) {
+	outline: none;
+	border: none;
+	width: 15em;
+	padding: 1em;
+}
+
+.btn_box button {
+	outline: none;
+	border: none;
+	width: 10em;
+	padding: 1em;
+	background-color: var(--btn-color);
+	color: #fff;
+	cursor: pointer;
+}
+
+.btn_box button:hover {
+	background-color: var(--btn-hover-color);
+}
+
+.btn_box input:focus {
+	border: 1px solid #05386b;
+}
