@@ -4,12 +4,26 @@ import PropTypes from "prop-types";
 import { createNodeArr } from "../utils/arrayUtils";
 
 Footer.propTypes = {
-	onCreate: PropTypes.func,
-	onClear: PropTypes.func,
-	url: PropTypes.string,
+	onCreate: PropTypes.func.isRequired,
+	onClear: PropTypes.func.isRequired,
+	url: PropTypes.string.isRequired,
+	currentStepInfo: PropTypes.object.isRequired,
+	stepsInfo: PropTypes.array.isRequired,
+	onStepChange: PropTypes.func.isRequired,
+	onNextStep: PropTypes.func.isRequired,
+	onPrevStep: PropTypes.func.isRequired,
 };
 
-function Footer({ onCreate, onClear, url }) {
+function Footer({
+	onCreate,
+	onClear,
+	url,
+	currentStepInfo,
+	stepsInfo,
+	onStepChange,
+	onNextStep,
+	onPrevStep,
+}) {
 	const [value, setValue] = useState("");
 	const [isCreated, setCreated] = useState(false);
 
@@ -23,9 +37,20 @@ function Footer({ onCreate, onClear, url }) {
 		setValue("");
 	};
 
-	const onPrev = () => {};
+	const onRangeChange = (e) => {
+		const changedStep = parseInt(e.target.value);
+		if (changedStep !== currentStepInfo.step) {
+			onStepChange(changedStep);
+		}
+	};
 
-	const onCheckSwap = () => {};
+	const onPrevStepClick = () => {
+		onPrevStep(currentStepInfo.step);
+	};
+
+	const onNextStepClick = () => {
+		onNextStep(currentStepInfo.step);
+	};
 
 	const onClearClick = () => {
 		setCreated(false);
@@ -50,19 +75,19 @@ function Footer({ onCreate, onClear, url }) {
 					)}
 					{isCreated && (
 						<div className={classes.btn_box}>
-							<button className={classes.btn} onClick={onPrev}>
+							<button className={classes.btn} onClick={onPrevStepClick}>
 								Prev Step
 							</button>
 							<input
 								type="range"
 								min={0}
-								max={10}
+								max={stepsInfo.length - 1}
 								step="1"
-								// onChange={onRangeChange}
-								value={0}
+								onChange={onRangeChange}
+								value={currentStepInfo.step}
 							></input>
-							<button className={classes.btn} onClick={onCheckSwap}>
-								Check Swap
+							<button className={classes.btn} onClick={onNextStepClick}>
+								Next Step
 							</button>
 							<button className={classes.btn} onClick={onClearClick}>
 								Clear Array

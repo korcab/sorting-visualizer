@@ -57,15 +57,16 @@ export function convertNumArrToNodeArr(arr, url) {
 		}
 	}
 
+	// eslint-disable-next-line default-case
 	switch (url) {
 		case "/merge":
 			return arr.map((number, index) => ({
 				id: index + 1,
 				initialNumber: number,
 				currentNumber: number,
+				currentNumberID: index + 1,
 				height: calcNumToHeight(number, maxNumber),
 				isSelecting: false,
-				isSwapping: false,
 				isLeft: false,
 				isRight: false,
 				prevIndex: index,
@@ -77,9 +78,9 @@ export function convertNumArrToNodeArr(arr, url) {
 				id: index + 1,
 				initialNumber: number,
 				currentNumber: number,
+				currentNumberID: index + 1,
 				height: calcNumToHeight(number, maxNumber),
 				isSelecting: false,
-				isSwapping: false,
 				isPivot: false,
 				isLeft: false,
 				isRight: false,
@@ -92,9 +93,9 @@ export function convertNumArrToNodeArr(arr, url) {
 				id: index + 1,
 				initialNumber: number,
 				currentNumber: number,
+				currentNumberID: index + 1,
 				height: calcNumToHeight(number, maxNumber),
 				isSelecting: false,
-				isSwapping: false,
 				isPivot: false,
 				prevIndex: index,
 				curIndex: index,
@@ -105,9 +106,9 @@ export function convertNumArrToNodeArr(arr, url) {
 				id: index + 1,
 				initialNumber: number,
 				currentNumber: number,
+				currentNumberID: index + 1,
 				height: calcNumToHeight(number, maxNumber),
 				isSelecting: false,
-				isSwapping: false,
 				initialIndex: index,
 				curIndex: index,
 				isOrdered: false,

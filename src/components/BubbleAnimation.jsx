@@ -5,10 +5,16 @@ import classes from "./Animation.module.css";
 import { withRouter } from "react-router-dom";
 import { useTrail, animated, config } from "react-spring";
 import { CONTAINER_HEIGHT } from "../utils/constants";
+import {
+	getTotalStepForBubbleSort,
+	getArrayStateInSpecificStep,
+} from "../utils/bubbleSortUtils";
 
 const BubbleAnimation = ({ match }) => {
 	const [initialArr, setInitialArr] = useState([]);
 	const [changedArr, setChangedArr] = useState([]);
+	const [currentStepInfo, setCurStepInfo] = useState({});
+	const [stepsInfo, setStepsInfo] = useState([]);
 
 	const onCreate = (arr) => {
 		setInitialArr(arr);
@@ -18,6 +24,35 @@ const BubbleAnimation = ({ match }) => {
 	const onClear = () => {
 		setInitialArr([]);
 		setChangedArr([]);
+	};
+
+	useEffect(() => {
+		// 배열이 초기화되면 각 단계에 대한 정보를 얻음.
+		const initialSteps = getTotalStepForBubbleSort(initialArr);
+		setStepsInfo(initialSteps);
+		setCurStepInfo(initialSteps[0]);
+	}, [initialArr]);
+
+	const onStepChange = (step) => {
+		setCurStepInfo(stepsInfo[step]);
+	};
+
+	useEffect(() => {
+		// 현재 단계가 바뀔 때마다 각 단계에서의 변경된 배열을 얻음.
+		const arr = getArrayStateInSpecificStep(currentStepInfo, initialArr);
+		setChangedArr(arr);
+	}, [currentStepInfo, initialArr]);
+
+	const onNextStep = () => {
+		if (currentStepInfo.step < stepsInfo.length) {
+			setCurStepInfo(stepsInfo[currentStepInfo.step + 1]);
+		}
+	};
+
+	const onPrevStep = () => {
+		if (currentStepInfo.step > 0) {
+			setCurStepInfo(stepsInfo[currentStepInfo.step - 1]);
+		}
 	};
 
 	const trail = useTrail(changedArr.length, {
@@ -58,7 +93,16 @@ const BubbleAnimation = ({ match }) => {
 					</div>
 				)}
 			</main>
-			<Footer onCreate={onCreate} onClear={onClear} url={match.url} />
+			<Footer
+				onCreate={onCreate}
+				onClear={onClear}
+				url={match.url}
+				currentStepInfo={currentStepInfo}
+				stepsInfo={stepsInfo}
+				onStepChange={onStepChange}
+				onNextStep={onNextStep}
+				onPrevStep={onPrevStep}
+			/>
 		</>
 	);
 };
